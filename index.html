@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Creativity Games — Modern Myths</title>
+<meta name="description" content="Six warm-up exercises for fiction writers. Generate a prompt, set the timer, write for 15 minutes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --surface2: #1c1c1c;
+    --border: rgba(240,236,228,0.1);
+    --border-hover: rgba(240,236,228,0.2);
+    --text: #f0ece4;
+    --muted: rgba(240,236,228,0.45);
+    --copper: #b87333;
+    --copper-dim: rgba(184,115,51,0.15);
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 3rem 1rem 5rem;
+  }
+
+  .app { max-width: 680px; margin: 0 auto; }
+
+  header { margin-bottom: 3rem; }
+  header h1 { font-size: 24px; font-weight: 500; letter-spacing: -0.3px; }
+  header p { font-size: 14px; color: var(--muted); margin-top: 6px; line-height: 1.6; }
+  .brand { font-size: 11px; font-weight: 500; color: var(--copper); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+
+  .game {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s;
+  }
+  .game:hover { border-color: var(--border-hover); }
+
+  .game-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .game-num {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--copper);
+    background: var(--copper-dim);
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.04em;
+  }
+  .game-title { font-size: 15px; font-weight: 500; }
+
+  .prompt-area {
+    background: var(--surface2);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 1rem 1.1rem;
+    margin-bottom: 14px;
+    min-height: 64px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .prompt-area .placeholder { color: var(--muted); font-style: italic; }
+  .prompt-area strong { font-weight: 500; color: var(--text); }
+  .prompt-area em { color: var(--copper); font-style: normal; }
+  .prompt-area a { color: var(--copper); text-decoration: none; }
+  .prompt-area a:hover { text-decoration: underline; }
+  .prompt-area .hint { display: block; margin-top: 8px; font-size: 12px; color: var(--muted); }
+  .song-title-display { font-size: 20px; font-weight: 500; display: block; margin: 6px 0 4px; letter-spacing: -0.2px; }
+
+  .pill {
+    display: inline-block;
+    background: var(--surface);
+    border: 0.5px solid var(--border-hover);
+    border-radius: 20px;
+    padding: 3px 11px;
+    font-size: 13px;
+    color: var(--text);
+    margin: 3px 2px;
+    cursor: text;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .pill:focus { border-color: var(--copper); }
+
+  .actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+  .btn {
+    background: transparent;
+    border: 0.5px solid var(--border-hover);
+    border-radius: var(--radius-sm);
+    padding: 7px 14px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--text);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .btn:hover { background: var(--surface2); border-color: var(--border-hover); }
+  .btn:active { transform: scale(0.98); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn.primary { border-color: var(--copper); color: var(--copper); }
+  .btn.primary:hover { background: var(--copper-dim); }
+
+  .timer {
+    margin-left: auto;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+  }
+  .timer.running { color: var(--text); }
+  .timer.urgent { color: #e05c4a; }
+
+  .photo-img {
+    width: 100%;
+    border-radius: var(--radius-sm);
+    margin-bottom: 14px;
+    max-height: 220px;
+    object-fit: cover;
+    display: none;
+    border: 0.5px solid var(--border);
+  }
+  .photo-img.loaded { display: block; }
+
+  footer {
+    margin-top: 3rem;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  footer a { color: var(--copper); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <p class="brand">Modern Myths</p>
+    <h1>Creativity games</h1>
+    <p>Six warm-up exercises. Generate a prompt, start the timer, write for 15 minutes — then take it to your Google Doc.</p>
+  </header>
+
+  <!-- 01 Metaphor -->
+  <div class="game" id="g1">
+    <div class="game-header"><span class="game-num">01</span><span class="game-title">Metaphor game</span></div>
+    <div class="prompt-area" id="g1-prompt"><span class="placeholder">Hit generate to get your prompt.</span></div>
+    <div class="actions">
+      <button class="btn primary" onclick="genMetaphor()">↺ Generate</button>
+      <button class="btn" id="g1-start" onclick="startTimer('g1')" style="display:none">▷ Start timer</button>
+      <span class="timer" id="g1-timer"></span>
+    </div>
+  </div>
+
+  <!-- 02 3 Nouns + Genre -->
+  <div class="game" id="g2">
+    <div class="game-header"><span class="game-num">02</span><span class="game-title">3 nouns + 1 genre</span></div>
+    <div class="prompt-area" id="g2-prompt"><span class="placeholder">Hit generate to get your prompt.</span></div>
+    <div class="actions">
+      <button class="btn primary" onclick="genNouns()">↺ Generate</button>
+      <button class="btn" id="g2-start" onclick="startTimer('g2')" style="display:none">▷ Start timer</button>
+      <span class="timer" id="g2-timer"></span>
+    </div>
+  </div>
+
+  <!-- 03 Random Wikipedia -->
+  <div class="game" id="g3">
+    <div class="game-header"><span class="game-num">03</span><span class="game-title">Random article</span></div>
+    <div class="prompt-area" id="g3-prompt"><span class="placeholder">Hit generate to pull 3 random Wikipedia topics.</span></div>
+    <div class="actions">
+      <button class="btn primary" id="g3-btn" onclick="genWiki()">↺ Generate</button>
+      <button class="btn" id="g3-start" onclick="startTimer('g3')" style="display:none">▷ Start timer</button>
+      <span class="timer" id="g3-timer"></span>
+    </div>
+  </div>
+
+  <!-- 04 Explosion or Inversion -->
+  <div class="game" id="g4">
+    <div class="game-header"><span class="game-num">04</span><span class="game-title">Explosion or inversion</span></div>
+    <div class="prompt-area" id="g4-prompt"><span class="placeholder">Hit generate to get your prompt.</span></div>
+    <div class="actions">
+      <button class="btn primary" onclick="genExplosion()">↺ Generate</button>
+      <button class="btn" id="g4-start" onclick="startTimer('g4')" style="display:none">▷ Start timer</button>
+      <span class="timer" id="g4-timer"></span>
+    </div>
+  </div>
+
+  <!-- 05 Photo Power -->
+  <div class="game" id="g5">
+    <div class="game-header"><span class="game-num">05</span><span class="game-title">Photo power</span></div>
+    <img class="photo-img" id="g5-img" alt="Random story prompt photo">
+    <div class="prompt-area" id="g5-prompt"><span class="placeholder">Hit generate for a random photo prompt.</span></div>
+    <div class="actions">
+      <button class="btn primary" onclick="genPhoto()">↺ Generate</button>
+      <button class="btn" id="g5-start" onclick="startTimer('g5')" style="display:none">▷ Start timer</button>
+      <span class="timer" id="g5-timer"></span>
+    </div>
+  </div>
+
+  <!-- 06 Song Title Story -->
+  <div class="game" id="g6">
+    <div class="game-header"><span class="game-num">06</span><span class="game-title">Song title story</span></div>
+    <div class="prompt-area" id="g6-prompt"><span class="placeholder">Hit generate to pull a random song title.</span></div>
+    <div class="actions">
+      <button class="btn primary" id="g6-btn" onclick="genSong()">↺ Generate</button>
+      <button class="btn" id="g6-start" onclick="startTimer('g6')" style="display:none">▷ Start timer</button>
+      <span class="timer" id="g6-timer"></span>
+    </div>
+  </div>
+
+  <footer>
+    A tool for the <a href="https://five-stories-strong.lovable.app/" target="_blank">Five Stories in Five Weeks</a> cohort &nbsp;·&nbsp; <a href="https://modernmyths.co" target="_blank">Modern Myths</a>
+  </footer>
+</div>
+
+<script>
+const NOUNS=['lighthouse','kettle','compass','wolf','ladder','lantern','mirror','clocktower','frozen river','stolen watch','foghorn','beehive','shipwreck','telescope','empty throne','red envelope','broken key','old radio','scarecrow','parachute','raspberry bush','loaf of bread','polar bear','ink bottle','cracked bell','moth','tidepool','rusted gate','candle','jawbone'];
+const GENRES=['horror','romance','detective story','sci-fi','fairy tale','western','thriller','historical fiction','comedy','dystopia','mythology','spy thriller','coming-of-age','noir','magical realism'];
+const OBJECTS=['traffic lights','handshakes','passwords','umbrellas','queuing','alarm clocks','apologies','small talk','door keys','lunch breaks','voicemail','street signs','first dates','morning routines','maps'];
+const WIKI_FALLBACK=['The Ottoman Empire','Bioluminescence','The Voynich Manuscript','Nikola Tesla','The Dancing Plague of 1518','Kowloon Walled City','The Dyatlov Pass Incident','Synesthesia','The Library of Alexandria','Pompeii','The Antikythera Mechanism','Sable Island','Chernobyl','Mary Anning','The Rosetta Stone','Tunguska Event','Hedy Lamarr','The Silk Road','Fabergé Eggs','Hollow Earth theories'];
+const SONG_FALLBACK=['The Sound of Silence','Everybody Hurts','I Will Survive','Fast Car','Redemption Song','Strange Fruit','Losing My Religion','The River','Both Sides Now','Hallelujah','A Change Is Gonna Come','Jolene','Blowin\' in the Wind','Purple Rain','Heroes','River','The Man Who Sold the World','Golden Years','Vienna','Don\'t Look Back in Anger'];
+
+const timers = {};
+const pick = a => a[Math.floor(Math.random()*a.length)];
+const pickN = (a,n) => { const s=[...a],r=[]; while(r.length<n){const i=Math.floor(Math.random()*s.length);r.push(s.splice(i,1)[0]);} return r; };
+const showStart = id => document.getElementById(id+'-start').style.display='inline-flex';
+
+function genMetaphor() {
+  const obj = pick(NOUNS);
+  const target = pick(['a love story','a revolution','grief','ambition','a city','a marriage','memory','war','a migration','a childhood']);
+  document.getElementById('g1-prompt').innerHTML = `Describe <strong>${obj}</strong> as if it were <em>${target}</em>.<br>Expand it into a poem or short story.`;
+  showStart('g1');
+}
+
+function genNouns() {
+  const nouns = pickN(NOUNS,3), genre = pick(GENRES);
+  document.getElementById('g2-prompt').innerHTML =
+    `<strong>Genre:</strong> ${genre}<br><br>` +
+    `Write a story using: ` +
+    nouns.map(t=>`<span class="pill" contenteditable="true" spellcheck="false">${t}</span>`).join('') +
+    `<span class="hint">Click any noun to edit it.</span>`;
+  showStart('g2');
+}
+
+async function genWiki() {
+  const btn = document.getElementById('g3-btn');
+  btn.textContent = '… Fetching'; btn.disabled = true;
+  const topics = [];
+  try {
+    for (let i=0; i<3; i++) {
+      const r = await fetch('https://en.wikipedia.org/api/rest_v1/page/random/summary');
+      const d = await r.json();
+      topics.push(`<a href="${d.content_urls?.desktop?.page||'#'}" target="_blank">${d.title}</a>`);
+    }
+  } catch(e) {
+    pickN(WIKI_FALLBACK,3).forEach(t => topics.push(t));
+  }
+  document.getElementById('g3-prompt').innerHTML =
+    `Combine these 3 topics into one story:<br><br>` +
+    topics.map(t=>`<span style="display:block;margin:4px 0;padding-left:4px;border-left:2px solid var(--copper)">  ${t}</span>`).join('');
+  showStart('g3');
+  btn.textContent = '↺ Generate'; btn.disabled = false;
+}
+
+function genExplosion() {
+  const thing = pick(OBJECTS), mode = Math.random()>.5 ? 'explosion' : 'inversion';
+  document.getElementById('g4-prompt').innerHTML = mode === 'explosion'
+    ? `<strong>Explosion —</strong> What if <em>${thing}</em> were turned up to 1000? Everyone's life depends on it. No one can escape it. Build a world around this.`
+    : `<strong>Inversion —</strong> What if <em>${thing}</em> didn't exist, or worked completely backwards? What would that world look like?`;
+  showStart('g4');
+}
+
+function genPhoto() {
+  const seed = Math.floor(Math.random()*2000)+1;
+  const img = document.getElementById('g5-img');
+  img.classList.remove('loaded');
+  img.src = `https://picsum.photos/seed/${seed}/700/320`;
+  img.onload = () => img.classList.add('loaded');
+  document.getElementById('g5-prompt').innerHTML = `What's the story in this image?<br>Write a poem or opening scene inspired by what you see.`;
+  showStart('g5');
+}
+
+async function genSong() {
+  const btn = document.getElementById('g6-btn');
+  btn.textContent = '… Fetching'; btn.disabled = true;
+  let title = null, artist = null;
+  try {
+    const offset = Math.floor(Math.random()*500000);
+    const r = await fetch(`https://musicbrainz.org/ws/2/recording/?query=*&offset=${offset}&limit=1&fmt=json`, {
+      headers: { 'User-Agent': 'CreativityGames/1.0 (hello@modernmyths.co)' }
+    });
+    const d = await r.json();
+    const rec = d.recordings?.[0];
+    if (rec?.title?.trim()) {
+      title = rec.title.trim();
+      artist = rec['artist-credit']?.[0]?.name || null;
+    }
+  } catch(e) {}
+  if (!title) title = pick(SONG_FALLBACK);
+  document.getElementById('g6-prompt').innerHTML =
+    `Use this as your story title:<br>` +
+    `<span class="song-title-display">"${title}"</span>` +
+    (artist ? `<span style="font-size:12px;color:var(--muted)">— ${artist}</span>` : '') +
+    `<span class="hint">Don't write about the song. Let the title pull you somewhere unexpected.</span>`;
+  showStart('g6');
+  btn.textContent = '↺ Generate'; btn.disabled = false;
+}
+
+function startTimer(id) {
+  if (timers[id]) {
+    clearInterval(timers[id]);
+    delete timers[id];
+    document.getElementById(id+'-start').textContent = '▷ Start timer';
+    const d = document.getElementById(id+'-timer');
+    d.textContent = ''; d.className = 'timer';
+    return;
+  }
+  let remaining = 15 * 60;
+  const display = document.getElementById(id+'-timer');
+  const btn = document.getElementById(id+'-start');
+  btn.textContent = '⏸ Stop';
+  function tick() {
+    const m = Math.floor(remaining/60), s = remaining%60;
+    display.textContent = `${m}:${s.toString().padStart(2,'0')}`;
+    display.className = 'timer running' + (remaining <= 60 ? ' urgent' : '');
+    if (remaining <= 0) {
+      clearInterval(timers[id]); delete timers[id];
+      display.textContent = "Time's up — open your Google Doc.";
+      display.className = 'timer';
+      btn.textContent = '▷ Start timer';
+      return;
+    }
+    remaining--;
+  }
+  tick();
+  timers[id] = setInterval(tick, 1000);
+}
+</script>
+</body>
+</html>
