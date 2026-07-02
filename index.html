@@ -329,7 +329,40 @@
 <script>
 const NOUNS=['lighthouse','kettle','compass','wolf','ladder','lantern','mirror','clocktower','frozen river','stolen watch','foghorn','beehive','shipwreck','telescope','empty throne','red envelope','broken key','old radio','scarecrow','parachute','raspberry bush','loaf of bread','polar bear','ink bottle','cracked bell','moth','tidepool','rusted gate','candle','jawbone'];
 const GENRES=['horror','romance','detective story','sci-fi','fairy tale','western','thriller','historical fiction','comedy','dystopia','mythology','spy thriller','coming-of-age','noir','magical realism'];
-const OBJECTS=['traffic lights','handshakes','passwords','umbrellas','queuing','alarm clocks','apologies','small talk','door keys','lunch breaks','voicemail','street signs','first dates','morning routines','maps'];
+const EXPLOSIONS=[
+  'What if every lie you told aged you by one year — visibly, immediately?',
+  'What if memory was a physical object you could gift, sell, or steal?',
+  'What if sleep was rationed by the state — earned through documented productivity?',
+  'What if kindness was biologically addictive, and withdrawal was lethal?',
+  'What if the sun only rose for cities that met a happiness threshold?',
+  'What if everyone\'s remaining lifespan was displayed as a number above their head?',
+  'What if music had been outlawed for fifty years, and your character is the last person who remembers what it sounded like?',
+  'What if every city required a toll to enter — and the price was a secret you\'d never told anyone?',
+  'What if grief had a legal time limit, and overstaying it was a crime?',
+  'What if every word you spoke cost you a coin, and the poor had gone silent?',
+  'What if love was a documented resource, tracked and taxed by the government?',
+  'What if your shadow showed who you really were — and you couldn\'t hide it?',
+  'What if dreams were broadcast publicly, and privacy only existed when you were awake?',
+  'What if every act of violence caused the perpetrator immediate, equal physical pain?',
+  'What if language had been legally reduced to one hundred words?'
+];
+const INVERSIONS=[
+  'What if everyone was born with superpowers — except your main character?',
+  'What if astronauts no longer went to space, but kept returning to Earth from it — and no one knew where they\'d been?',
+  'What if gravity worked sideways?',
+  'What if children raised their parents?',
+  'What if the dead could vote — and they were the majority?',
+  'What if you forgot a memory every time you made a new one?',
+  'What if doctors caused illness, and illness healed people?',
+  'What if wars were fought only by the politicians and leaders who declared them?',
+  'What if everyone was born old and grew younger until they disappeared?',
+  'What if sleep was when you were truly conscious, and waking life was the dream?',
+  'What if the ocean was above us?',
+  'What if technology got simpler every year — and the most primitive tools were the newest inventions?',
+  'What if predators feared their prey?',
+  'What if cities moved and people were stationary?',
+  'What if success made you invisible, and failure made you famous?'
+];
 const WIKI_FALLBACK=['The Ottoman Empire','Bioluminescence','The Voynich Manuscript','Nikola Tesla','The Dancing Plague of 1518','Kowloon Walled City','The Dyatlov Pass Incident','Synesthesia','The Library of Alexandria','Pompeii','The Antikythera Mechanism','Sable Island','Chernobyl','Mary Anning','The Rosetta Stone','Tunguska Event','Hedy Lamarr','The Silk Road','Fabergé Eggs','Hollow Earth theories'];
 const SONG_FALLBACK=['The Sound of Silence','Everybody Hurts','I Will Survive','Fast Car','Redemption Song','Strange Fruit','Losing My Religion','The River','Both Sides Now','Hallelujah','A Change Is Gonna Come','Jolene','Blowin\' in the Wind','Purple Rain','Heroes','River','The Man Who Sold the World','Golden Years','Vienna','Don\'t Look Back in Anger'];
 
@@ -376,10 +409,11 @@ async function genWiki() {
 }
 
 function genExplosion() {
-  const thing = pick(OBJECTS), mode = Math.random()>.5 ? 'explosion' : 'inversion';
+  const mode = Math.random() > .5 ? 'explosion' : 'inversion';
+  const prompt = mode === 'explosion' ? pick(EXPLOSIONS) : pick(INVERSIONS);
   document.getElementById('g4-prompt').innerHTML = mode === 'explosion'
-    ? `<strong>Explosion —</strong> What if <em>${thing}</em> were turned up to 1000? Everyone's life depends on it. No one can escape it. Build a world around this.`
-    : `<strong>Inversion —</strong> What if <em>${thing}</em> didn't exist, or worked completely backwards? What would that world look like?`;
+    ? `<strong>Explosion —</strong> <em>${prompt}</em><br><span class="hint">Scale it to 1000. Build the world where this is the central fact of every life.</span>`
+    : `<strong>Inversion —</strong> <em>${prompt}</em><br><span class="hint">Write the story that can only exist in this world.</span>`;
   showStart('g4');
 }
 
